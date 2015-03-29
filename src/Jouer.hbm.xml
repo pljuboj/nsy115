@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 29 mars 2015 16:42:25 by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="Jouer" table="jouer" catalog="nsy115">
+        <composite-id name="id" class="JouerId">
+            <key-property name="idjoueur" type="string">
+                <column name="idjoueur" length="45" />
+            </key-property>
+            <key-property name="idpartie" type="int">
+                <column name="idpartie" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="joueur" class="Joueur" update="false" insert="false" fetch="select">
+            <column name="idjoueur" length="45" not-null="true" />
+        </many-to-one>
+        <many-to-one name="partie" class="Partie" update="false" insert="false" fetch="select">
+            <column name="idpartie" not-null="true" />
+        </many-to-one>
+        <property name="etat" type="string">
+            <column name="etat" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>
