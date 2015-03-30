@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 29 mars 2015 16:42:25 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Partie" table="partie" catalog="nsy115">
+    <class name="model.Partie" table="partie" catalog="nsy115">
         <id name="idpartie" type="java.lang.Integer">
             <column name="idpartie" />
             <generator class="identity" />
@@ -39,7 +39,7 @@
             <key>
                 <column name="idpartie" not-null="true" />
             </key>
-            <one-to-many class="Jouer" />
+            <one-to-many class="model.Jouer" />
         </set>
     </class>
 </hibernate-mapping>

@@ -106,7 +106,7 @@
 						<div class="form-group">
 							<label for="password" class="col-md-3 control-label">Password</label>
 							<div class="col-md-9">
-								<input type="password" class="form-control" name="passwd"
+								<input type="password" class="form-control" name="password"
 									placeholder="Password">
 							</div>
 						</div>

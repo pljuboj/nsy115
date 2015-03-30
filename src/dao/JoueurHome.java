@@ -4,14 +4,13 @@ package dao;
 
 import java.util.List;
 
-import javax.naming.InitialContext;
-
 import model.Joueur;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Example;
 
 /**
@@ -22,106 +21,83 @@ import org.hibernate.criterion.Example;
  */
 public class JoueurHome {
 
-	private static final Log log = LogFactory.getLog(JoueurHome.class);
-
 	private final SessionFactory sessionFactory = getSessionFactory();
 
 	protected SessionFactory getSessionFactory() {
-		try {
-			return (SessionFactory) new InitialContext()
-					.lookup("SessionFactory");
-		} catch (Exception e) {
-			log.error("Could not locate SessionFactory in JNDI", e);
-			throw new IllegalStateException(
-					"Could not locate SessionFactory in JNDI");
-		}
+		return new Configuration().configure().buildSessionFactory();
 	}
 
-	public void persist(Joueur transientInstance) {
-		log.debug("persisting Joueur instance");
+	public void save(Joueur transientInstance) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
-			log.debug("persist successful");
+			tx = session.beginTransaction();
+			session.save(transientInstance);
+			tx.commit();
 		} catch (RuntimeException re) {
-			log.error("persist failed", re);
 			throw re;
+		}
+		finally {
+			session.close();
 		}
 	}
 
 	public void attachDirty(Joueur instance) {
-		log.debug("attaching dirty Joueur instance");
 		try {
 			sessionFactory.getCurrentSession().saveOrUpdate(instance);
-			log.debug("attach successful");
 		} catch (RuntimeException re) {
-			log.error("attach failed", re);
 			throw re;
 		}
 	}
 
 	public void attachClean(Joueur instance) {
-		log.debug("attaching clean Joueur instance");
 		try {
 			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
-			log.debug("attach successful");
 		} catch (RuntimeException re) {
-			log.error("attach failed", re);
 			throw re;
 		}
 	}
 
 	public void delete(Joueur persistentInstance) {
-		log.debug("deleting Joueur instance");
 		try {
 			sessionFactory.getCurrentSession().delete(persistentInstance);
-			log.debug("delete successful");
 		} catch (RuntimeException re) {
-			log.error("delete failed", re);
 			throw re;
 		}
 	}
 
 	public Joueur merge(Joueur detachedInstance) {
-		log.debug("merging Joueur instance");
 		try {
 			Joueur result = (Joueur) sessionFactory.getCurrentSession().merge(
 					detachedInstance);
-			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
-			log.error("merge failed", re);
 			throw re;
 		}
 	}
 
 	public Joueur findById(java.lang.String id) {
-		log.debug("getting Joueur instance with id: " + id);
 		try {
-			Joueur instance = (Joueur) sessionFactory.getCurrentSession().get(
-					"Joueur", id);
+			sessionFactory.openSession().beginTransaction();
+			Joueur instance = (Joueur) sessionFactory.openSession().get(
+					"model.Joueur", id);
+			sessionFactory.openSession().beginTransaction().commit();
 			if (instance == null) {
-				log.debug("get successful, no instance found");
 			} else {
-				log.debug("get successful, instance found");
 			}
 			return instance;
 		} catch (RuntimeException re) {
-			log.error("get failed", re);
 			throw re;
 		}
 	}
 
 	public List findByExample(Joueur instance) {
-		log.debug("finding Joueur instance by example");
 		try {
 			List results = sessionFactory.getCurrentSession()
 					.createCriteria("Joueur").add(Example.create(instance))
 					.list();
-			log.debug("find by example successful, result size: "
-					+ results.size());
 			return results;
 		} catch (RuntimeException re) {
-			log.error("find by example failed", re);
 			throw re;
 		}
 	}

@@ -38,8 +38,8 @@ public class LoginService {
 		joueur.setMotdepasse(encPwd);
 		Joueur joueurTemp = joueurDao.findById(id);		
 		
-		if(joueurTemp != null){
-			joueurDao.persist(joueur);	
+		if(joueurTemp == null){
+			joueurDao.save(joueur);	
 			return true;
 		}
 		else{

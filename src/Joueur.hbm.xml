@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 29 mars 2015 16:42:25 by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="Joueur" table="joueur" catalog="nsy115">
+    <class name="model.Joueur" table="joueur" catalog="nsy115">
         <id name="idjoueur" type="string">
             <column name="idjoueur" length="45" />
             <generator class="assigned" />
@@ -15,7 +15,7 @@
             <key>
                 <column name="idjoueur" length="45" not-null="true" />
             </key>
-            <one-to-many class="Jouer" />
+            <one-to-many class="model.Jouer" />
         </set>
     </class>
 </hibernate-mapping>

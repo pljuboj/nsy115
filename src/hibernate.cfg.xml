@@ -2,10 +2,12 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
                                          "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
- <session-factory name="">
-  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-  <property name="hibernate.connection.password">root</property>
-  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/nsy115</property>
-  <property name="hibernate.connection.username">root</property>
+ <session-factory>
+  <property name="hibernate.connection.datasource">jdbc/nsy115</property>
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+  <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
+  <mapping resource="Jouer.hbm.xml"/>
+  <mapping resource="Joueur.hbm.xml"/>
+  <mapping resource="Partie.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>
