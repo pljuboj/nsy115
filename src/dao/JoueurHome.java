@@ -27,78 +27,33 @@ public class JoueurHome {
 		return new Configuration().configure().buildSessionFactory();
 	}
 
-	public void save(Joueur transientInstance) {
+	public void save(Joueur joueur) {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(transientInstance);
+			session.save(joueur);
 			tx.commit();
 		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
 			throw re;
-		}
-		finally {
+		} finally {
 			session.close();
 		}
 	}
-
-	public void attachDirty(Joueur instance) {
+	public Joueur findById(String id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(instance);
+			tx = session.beginTransaction();
+			Joueur joueur = (Joueur) session.get(Joueur.class, id);
+			tx.commit();
+			return joueur;
 		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
 			throw re;
-		}
-	}
-
-	public void attachClean(Joueur instance) {
-		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public void delete(Joueur persistentInstance) {
-		try {
-			sessionFactory.getCurrentSession().delete(persistentInstance);
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public Joueur merge(Joueur detachedInstance) {
-		try {
-			Joueur result = (Joueur) sessionFactory.getCurrentSession().merge(
-					detachedInstance);
-			return result;
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public Joueur findById(java.lang.String id) {
-		try {
-			sessionFactory.openSession().beginTransaction();
-			Joueur instance = (Joueur) sessionFactory.openSession().get(
-					"model.Joueur", id);
-			sessionFactory.openSession().beginTransaction().commit();
-			if (instance == null) {
-			} else {
-			}
-			return instance;
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public List findByExample(Joueur instance) {
-		try {
-			List results = sessionFactory.getCurrentSession()
-					.createCriteria("Joueur").add(Example.create(instance))
-					.list();
-			return results;
-		} catch (RuntimeException re) {
-			throw re;
+		} finally {
+			session.close();
 		}
 	}
 }

@@ -47,10 +47,22 @@ public class Login extends HttpServlet {
 		LoginService logServ = new LoginService();
 		
 		if (form.equals("loginform")){
-			logServ.connecter(joueur);
+			if(logServ.connecter(joueur)){
+				request.getRequestDispatcher("/menu.jsp").forward(request, response);
+			}else{
+				request.setAttribute("loginFail", "Incorrect Username/Password");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}
 		}
 		else{
-			logServ.enregistrer(joueur);
+			if(logServ.enregistrer(joueur)){
+				request.setAttribute("registrationSuccess", "Registration successful, please login");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}
+			else{
+				request.setAttribute("registrationFail", "Username already exists");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}
 		}
 				
 	}
