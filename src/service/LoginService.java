@@ -16,15 +16,19 @@ public class LoginService {
 		joueurDao = new JoueurHome();
 		String id = joueur.getIdjoueur();
 		String password = joueur.getMotdepasse();
-		password = encoder(password);
-		Joueur joueurTemp = joueurDao.findById(id);
-		String idTemp = joueurTemp.getIdjoueur();
-		String pwdTemp = joueurTemp.getMotdepasse();
+		password = encoder(password);		
+		String idTemp = "";
+		String pwdTemp = "";
+		
+		if(joueurDao.findById(id) != null){			
+			Joueur joueurTemp = joueurDao.findById(id);
+			idTemp = joueurTemp.getIdjoueur();
+			pwdTemp = joueurTemp.getMotdepasse();
+		}
 		
 		if(id.equals(idTemp) && password.equals(pwdTemp)){
-			return true;
-		}
-		else{
+				return true;			
+		}else{
 			return false;
 		}
 	}

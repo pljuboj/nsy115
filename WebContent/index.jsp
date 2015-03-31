@@ -20,7 +20,7 @@
 	</c:if>
 	<c:if test="${not empty loginFail}">
 		$(document).ready(function() {
-			$('#loginalert').show();
+			$('#login-alert').show();
 		});
 	</c:if>
 </script>
