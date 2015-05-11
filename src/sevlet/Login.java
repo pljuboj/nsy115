@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import service.LoginService;
 import model.Joueur;
@@ -40,6 +41,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(true);
 		String form = request.getParameter("pageName");
 		String login = request.getParameter("username");
 		String password = request.getParameter("password");
@@ -48,6 +50,7 @@ public class Login extends HttpServlet {
 		
 		if (form.equals("loginform")){
 			if(logServ.connecter(joueur)){
+				session.setAttribute("username", login);
 				request.getRequestDispatcher("/menu.jsp").forward(request, response);
 			}else{
 				request.setAttribute("loginFail", "Incorrect Username/Password");
