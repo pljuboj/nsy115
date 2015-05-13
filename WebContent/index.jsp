@@ -8,7 +8,6 @@
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="scripts/tools.js"></script>
-<script type="text/javascript" src="scripts/websocket.js"></script>
 <title>Login</title>
 
 <script>
@@ -29,8 +28,6 @@
 
 </head>
 <body>
-
-	<div id="output"></div>
 	
 	<div class="container">
 		<div id="loginbox" style="margin-top: 50px;"

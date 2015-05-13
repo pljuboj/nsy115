@@ -44,6 +44,9 @@ public class Menu extends HttpServlet {
 			}
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		}
+		else if (codeOp.equals("CREER")) {
+			request.getRequestDispatcher("/grille.jsp").forward(request, response);
+		}
 	}
 
 }
