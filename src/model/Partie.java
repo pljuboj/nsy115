@@ -12,6 +12,10 @@ import javax.json.JsonObject;
  */
 public class Partie implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6045726336237969206L;
 	private Integer idpartie;
 	private String x1;
 	private String x2;
@@ -22,7 +26,7 @@ public class Partie implements java.io.Serializable {
 	private String z1;
 	private String z2;
 	private String z3;
-	private Set jouers = new HashSet(0);
+	private Set<Joueur> joueurs = new HashSet<Joueur>(0);
 	private JsonObject json;
 
 	public Partie() {
@@ -33,7 +37,7 @@ public class Partie implements java.io.Serializable {
 	}
 
 	public Partie(String x1, String x2, String x3, String y1, String y2,
-			String y3, String z1, String z2, String z3, Set jouers) {
+			String y3, String z1, String z2, String z3, Set<Joueur> joueurs) {
 		this.x1 = x1;
 		this.x2 = x2;
 		this.x3 = x3;
@@ -43,7 +47,7 @@ public class Partie implements java.io.Serializable {
 		this.z1 = z1;
 		this.z2 = z2;
 		this.z3 = z3;
-		this.jouers = jouers;
+		this.joueurs = joueurs;
 	}
 
 	public Integer getIdpartie() {
@@ -126,12 +130,12 @@ public class Partie implements java.io.Serializable {
 		this.z3 = z3;
 	}
 
-	public Set getJouers() {
-		return this.jouers;
+	public Set<Joueur> getJoueurs() {
+		return this.joueurs;
 	}
 
-	public void setJouers(Set jouers) {
-		this.jouers = jouers;
+	public void setJoueurs(Set<Joueur> joueurs) {
+		this.joueurs = joueurs;
 	}
 
 

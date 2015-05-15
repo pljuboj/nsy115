@@ -2,7 +2,8 @@
  * 
  */
 
-var wsUri = "ws://" + document.location.host + "/nsy115/tictactoe";
+var idpartie = '<c:out value="${idpartie}"/>';
+var wsUri = "ws://" + document.location.host + "/nsy115/tictactoe/" + idpartie;
 var websocket = new WebSocket(wsUri);
 
 //websocket.onerror = function(evt) { onError(evt) };
@@ -35,6 +36,9 @@ function onMessage(evt) {
     document.getElementById("7").innerHTML = json.z1;
     document.getElementById("8").innerHTML = json.z2;
     document.getElementById("9").innerHTML = json.z3;    
+    
+	document.getElementById('gameboard').style.pointerEvents = 'auto';
+	document.getElementById('message').innerHTML = 'A vous de jouer !';
 }
 
 function envoyer() {

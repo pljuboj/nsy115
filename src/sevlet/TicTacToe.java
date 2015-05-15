@@ -11,7 +11,7 @@ import model.Partie;
 import service.TicTacToeDecoder;
 import service.TicTacToeEncoder;
 
-@ServerEndpoint(value="/tictactoe", encoders = {TicTacToeEncoder.class}, decoders = {TicTacToeDecoder.class})
+@ServerEndpoint(value="/tictactoe/{idpartie}", encoders = {TicTacToeEncoder.class}, decoders = {TicTacToeDecoder.class})
 
 public class TicTacToe {
 

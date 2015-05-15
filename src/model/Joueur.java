@@ -10,9 +10,13 @@ import java.util.Set;
  */
 public class Joueur implements java.io.Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5341147988567063022L;
 	private String idjoueur;
 	private String motdepasse;
-	private Set jouers = new HashSet(0);
+	private Set<Partie> parties = new HashSet<Partie>(0);
 
 	public Joueur() {
 	}
@@ -21,10 +25,10 @@ public class Joueur implements java.io.Serializable {
 		this.idjoueur = idjoueur;
 	}
 
-	public Joueur(String idjoueur, String motdepasse, Set jouers) {
+	public Joueur(String idjoueur, String motdepasse, Set<Partie> parties) {
 		this.idjoueur = idjoueur;
 		this.motdepasse = motdepasse;
-		this.jouers = jouers;
+		this.parties = parties;
 	}
 
 	public String getIdjoueur() {
@@ -43,12 +47,12 @@ public class Joueur implements java.io.Serializable {
 		this.motdepasse = motdepasse;
 	}
 
-	public Set getJouers() {
-		return this.jouers;
+	public Set<Partie> getParties() {
+		return this.parties;
 	}
 
-	public void setJouers(Set jouers) {
-		this.jouers = jouers;
+	public void setParties(Set<Partie> parties) {
+		this.parties = parties;
 	}
 
 }

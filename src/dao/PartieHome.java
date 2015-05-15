@@ -2,14 +2,14 @@ package dao;
 // default package
 // Generated 29 mars 2015 16:42:25 by Hibernate Tools 3.4.0.CR1
 
-import java.util.List;
+import java.io.Serializable;
 
 import model.Partie;
 
-import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Example;
 
 /**
  * Home object for domain model class Partie.
@@ -26,69 +26,36 @@ public class PartieHome {
 		return new Configuration().configure().buildSessionFactory();
 	}
 
-	public void persist(Partie transientInstance) {
+	public Integer save(Partie partie) {
+		Session session = sessionFactory.openSession();
+		Serializable ser = null;
+		Transaction tx = null;
 		try {
-			sessionFactory.getCurrentSession().persist(transientInstance);
+			tx = session.beginTransaction();
+			ser = session.save(partie);
+			tx.commit();			
 		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
 			throw re;
+		} finally {
+			session.close();
 		}
+		return (Integer)ser;
 	}
 
-	public void attachDirty(Partie instance) {
+	public Partie findById(Integer id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
 		try {
-			sessionFactory.getCurrentSession().saveOrUpdate(instance);
+			tx = session.beginTransaction();
+			Partie partie = (Partie) session.get(Partie.class, id);
+			tx.commit();
+			return partie;
 		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
 			throw re;
-		}
-	}
-
-	public void attachClean(Partie instance) {
-		try {
-			sessionFactory.getCurrentSession().lock(instance, LockMode.NONE);
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public void delete(Partie persistentInstance) {
-		try {
-			sessionFactory.getCurrentSession().delete(persistentInstance);
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public Partie merge(Partie detachedInstance) {
-		try {
-			Partie result = (Partie) sessionFactory.getCurrentSession().merge(
-					detachedInstance);
-			return result;
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public Partie findById(java.lang.Integer id) {
-		try {
-			Partie instance = (Partie) sessionFactory.getCurrentSession().get(
-					"Partie", id);
-			if (instance == null) {
-			} else {
-			}
-			return instance;
-		} catch (RuntimeException re) {
-			throw re;
-		}
-	}
-
-	public List findByExample(Partie instance) {
-		try {
-			List results = sessionFactory.getCurrentSession()
-					.createCriteria("Partie").add(Example.create(instance))
-					.list();
-			return results;
-		} catch (RuntimeException re) {
-			throw re;
+		} finally {
+			session.close();
 		}
 	}
 }

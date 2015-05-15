@@ -2,16 +2,12 @@ package dao;
 // default package
 // Generated 29 mars 2015 16:42:25 by Hibernate Tools 3.4.0.CR1
 
-import java.util.List;
-
 import model.Joueur;
 
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Example;
 
 /**
  * Home object for domain model class Joueur.
@@ -32,7 +28,7 @@ public class JoueurHome {
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			session.save(joueur);
+			session.saveOrUpdate(joueur);
 			tx.commit();
 		} catch (RuntimeException re) {
 			if (tx != null) tx.rollback();

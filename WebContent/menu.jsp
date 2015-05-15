@@ -41,9 +41,9 @@
 	</div>
 	
 	<form id="menuform" class="form-horizontal" role="form" action="Menu" method="post">	
-		<input type="hidden" id="CODE_OP" value="" name="CODE_OP">		
-		<button type="button" class="btn btn-primary" onclick="creer()">Créer une partie</button>
-		<button type="button" class="btn btn-primary" onclick="ami()">Jouer contre un ami</button>
+		<input type="hidden" id="CODE_OP" value="" name="CODE_OP">
+		<input type="hidden" id="ID_PARTIE" value="" name="ID_PARTIE">			
+		<button type="button" class="btn btn-primary" onclick="creer()">Créer une partie</button>		
 		<button type="button" class="btn btn-primary" onclick="rejoindre()">Rejoindre une partie</button>
 		<button type="button" class="btn btn-primary" onclick="deco()">Déconnexion</button>
 	</form>
@@ -54,18 +54,15 @@
 		    document.getElementById("menuform").submit();
 		}
 		
-		function ami(){
-			document.getElementById("CODE_OP").value = "AMI";
-		    document.getElementById("menuform").submit();
-		}
-		
 		function rejoindre(){
+			var partie = prompt("Entrez l'ID de la partie");
+			document.getElementById("ID_PARTIE").value = partie;
 			document.getElementById("CODE_OP").value = "REJOINDRE";
 		    document.getElementById("menuform").submit();
 		}
 		
-		function deco(){
-			document.getElementById("CODE_OP").value = "DECO";
+		function deco(){			
+			document.getElementById("CODE_OP").value = "DECO";			
 		    document.getElementById("menuform").submit();
 		}
 	</script>
