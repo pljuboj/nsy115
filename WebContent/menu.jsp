@@ -40,6 +40,8 @@
 		</div>
 	</div>
 	
+	<div id ="output">${message}</div>	
+	
 	<form id="menuform" class="form-horizontal" role="form" action="Menu" method="post">	
 		<input type="hidden" id="CODE_OP" value="" name="CODE_OP">
 		<input type="hidden" id="ID_PARTIE" value="" name="ID_PARTIE">			

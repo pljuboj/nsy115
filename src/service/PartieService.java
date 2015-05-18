@@ -43,4 +43,14 @@ public class PartieService {
 		joueur.setParties(parties);
 		joueurDao.save(joueur);
 	}
+	
+	public boolean partiePleine(int idpartie) {
+		partieDao = new PartieHome();
+		Partie partie = partieDao.get(idpartie);
+		if(partie.getJoueurs().size()==2){
+			return true;
+		}else {
+			return false;
+		}
+	}
 }

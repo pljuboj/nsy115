@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import model.Partie;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -49,6 +50,23 @@ public class PartieHome {
 		try {
 			tx = session.beginTransaction();
 			Partie partie = (Partie) session.get(Partie.class, id);
+			tx.commit();
+			return partie;
+		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
+			throw re;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Partie get(Integer id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Partie partie = (Partie) session.get(Partie.class, id);
+			Hibernate.initialize(partie.getJoueurs());
 			tx.commit();
 			return partie;
 		} catch (RuntimeException re) {

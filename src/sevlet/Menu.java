@@ -61,11 +61,17 @@ public class Menu extends HttpServlet {
 			session = request.getSession(true);
 			String username = ((String) session.getAttribute("username")).toUpperCase();
 			int idPartie = Integer.parseInt(request.getParameter("ID_PARTIE"));
-			request.setAttribute("idpartie", idPartie);
-			request.setAttribute("username", username);
-			request.setAttribute("yourturn", "no");
-			partSer.rejoindrePartie(session, idPartie);
-			request.getRequestDispatcher("/grille.jsp").forward(request, response);
+			
+			if (partSer.partiePleine(idPartie)) {
+				request.setAttribute("message", "La partie est pleine");
+				request.getRequestDispatcher("/menu.jsp").forward(request, response);
+			} else {
+				request.setAttribute("idpartie", idPartie);
+				request.setAttribute("username", username);
+				request.setAttribute("yourturn", "no");
+				partSer.rejoindrePartie(session, idPartie);
+				request.getRequestDispatcher("/grille.jsp").forward(request, response);
+			}
 		}
 	}
 
