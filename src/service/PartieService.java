@@ -1,6 +1,8 @@
 package service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -34,9 +36,9 @@ public class PartieService {
 		if(session!=null){
 			username = ((String) session.getAttribute("username")).toUpperCase();			
 		}
-		Set<Partie> parties = new HashSet<Partie>();
 		joueurDao = new JoueurHome();
-		Joueur joueur = joueurDao.findById(username);
+		Joueur joueur = joueurDao.get(username);
+		Set<Partie> parties = joueur.getParties();
 		partieDao = new PartieHome();
 		Partie partie = partieDao.findById(idPartie);
 		parties.add(partie);
@@ -52,5 +54,17 @@ public class PartieService {
 		}else {
 			return false;
 		}
+	}
+	
+	public ArrayList<Partie> partieDispo() {
+		partieDao = new PartieHome();		
+		ArrayList<Partie> partiesOneP = new ArrayList<Partie>(); 
+		List<Partie> parties =	partieDao.fetchAll();
+		for(Partie partie : parties){
+			if(partie.getJoueurs().size()==1){
+				partiesOneP.add(partie);
+			}
+		}
+		return partiesOneP;
 	}
 }

@@ -3,9 +3,11 @@ package dao;
 // Generated 29 mars 2015 16:42:25 by Hibernate Tools 3.4.0.CR1
 
 import java.io.Serializable;
+import java.util.List;
 
 import model.Partie;
 
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,6 +25,7 @@ public class PartieHome {
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
+	@SuppressWarnings("deprecation")
 	protected SessionFactory getSessionFactory() {
 		return new Configuration().configure().buildSessionFactory();
 	}
@@ -69,6 +72,27 @@ public class PartieHome {
 			Hibernate.initialize(partie.getJoueurs());
 			tx.commit();
 			return partie;
+		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
+			throw re;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public List<Partie> fetchAll() {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Criteria cr = session.createCriteria(Partie.class);
+			@SuppressWarnings("unchecked")
+			List<Partie> parties = cr.list();
+			for(Partie partie : parties){
+				Hibernate.initialize(partie.getJoueurs());				
+			}
+			tx.commit();
+			return parties;
 		} catch (RuntimeException re) {
 			if (tx != null) tx.rollback();
 			throw re;

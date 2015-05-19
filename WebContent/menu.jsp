@@ -12,9 +12,6 @@
 
 </head>
 <body>
-
-
-
 <div class="container">
     	<div class="row">
 			<div class="col-md-6">
@@ -28,11 +25,18 @@
 								<th># </th>
 								<th>Player</th>
 								<th>Ranking</th>
-							</tr>
+							</tr>						
 						</thead>
-						<tbody>
-							<tr>
-							</tr>
+						<tbody>							
+							<c:forEach var="partie" items="${parties}">
+								<tr class='clickable-row' style='cursor: pointer' data-href='Menu?idpartie=${partie.idpartie}'>
+									<th>${partie.idpartie}</th>
+									<c:forEach var="joueur" items="${partie.joueurs}">
+										<th>${joueur.idjoueur}</th>
+									</c:forEach>
+									<th></th>
+								</tr>
+							</c:forEach>	
 						</tbody>
 					</table>
 				</div>
@@ -51,6 +55,12 @@
 	</form>
 	
 	<script>
+		jQuery(document).ready(function($) {
+		    $(".clickable-row").click(function() {
+		        window.document.location = $(this).data("href");
+		    });
+		});
+		
 		function creer(){
 			document.getElementById("CODE_OP").value = "CREER";
 		    document.getElementById("menuform").submit();

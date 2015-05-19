@@ -23,21 +23,33 @@ public class Menu extends HttpServlet {
      */
     public Menu() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		HttpSession session = request.getSession(true);
+		String username = ((String) session.getAttribute("username")).toUpperCase();
+		int idPartie = Integer.parseInt(request.getParameter("idpartie"));
+		PartieService partSer = new PartieService();
+		
+		if (partSer.partiePleine(idPartie)) {
+			request.setAttribute("message", "La partie est pleine");
+			request.getRequestDispatcher("/menu.jsp").forward(request, response);
+		} else {
+			request.setAttribute("idpartie", idPartie);
+			request.setAttribute("username", username);
+			request.setAttribute("yourturn", "no");
+			partSer.rejoindrePartie(session, idPartie);
+			request.getRequestDispatcher("/grille.jsp").forward(request, response);
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String codeOp = request.getParameter("CODE_OP");
 		PartieService partSer = new PartieService();
 		HttpSession session;

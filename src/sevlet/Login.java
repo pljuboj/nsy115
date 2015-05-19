@@ -1,6 +1,7 @@
 package sevlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import service.LoginService;
+import service.PartieService;
 import model.Joueur;
 import model.Partie;
 
@@ -50,6 +52,9 @@ public class Login extends HttpServlet {
 		
 		if (form.equals("loginform")){
 			if(logServ.connecter(joueur)){
+				PartieService partSer = new PartieService();
+				ArrayList<Partie> parties = partSer.partieDispo();
+				session.setAttribute("parties", parties);
 				session.setAttribute("username", login);
 				request.getRequestDispatcher("/menu.jsp").forward(request, response);
 			}else{

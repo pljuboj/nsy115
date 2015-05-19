@@ -4,6 +4,7 @@ package dao;
 
 import model.Joueur;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -19,6 +20,7 @@ public class JoueurHome {
 
 	private final SessionFactory sessionFactory = getSessionFactory();
 
+	@SuppressWarnings("deprecation")
 	protected SessionFactory getSessionFactory() {
 		return new Configuration().configure().buildSessionFactory();
 	}
@@ -43,6 +45,23 @@ public class JoueurHome {
 		try {
 			tx = session.beginTransaction();
 			Joueur joueur = (Joueur) session.get(Joueur.class, id);
+			tx.commit();
+			return joueur;
+		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
+			throw re;
+		} finally {
+			session.close();
+		}
+	}
+	
+	public Joueur get(String id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Joueur joueur = (Joueur) session.get(Joueur.class, id);
+			Hibernate.initialize(joueur.getParties());
 			tx.commit();
 			return joueur;
 		} catch (RuntimeException re) {

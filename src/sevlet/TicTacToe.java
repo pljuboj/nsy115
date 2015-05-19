@@ -57,7 +57,7 @@ public class TicTacToe {
 	}
 
 	@OnClose
-	public void onClose (/*Session*/ @PathParam("idpartie") Integer idpartie) {
+	public void onClose (/*Session peer*/ @PathParam("idpartie") Integer idpartie) {
 		//peers.remove(peer);
 		firstPlayer.remove(idpartie);
 		secondPlayer.remove(idpartie);
