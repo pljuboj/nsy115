@@ -67,4 +67,9 @@ public class PartieService {
 		}
 		return partiesOneP;
 	}
+	
+	public void supprimerPartie(int idPartie){
+		partieDao = new PartieHome();		
+		partieDao.delete(idPartie);
+	}
 }

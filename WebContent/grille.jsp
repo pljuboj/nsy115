@@ -47,7 +47,7 @@ function onMessage(evt) {
     document.getElementById("7").innerHTML = json.z1;
     document.getElementById("8").innerHTML = json.z2;
     document.getElementById("9").innerHTML = json.z3;    
-    
+    updateScore();
 	document.getElementById('gameboard').style.pointerEvents = 'auto';
 	document.getElementById('message').innerHTML = 'A vous de jouer !';
 }
@@ -56,6 +56,28 @@ function envoyer() {
 	var message = "blabla";
 	writeToScreen("ENVOYE : " + message);
 	websocket.send(message);
+}
+
+function updateScore(){
+	var x1 = document.getElementById("1").innerHTML;
+	var x2 = document.getElementById("2").innerHTML;
+	var x3 = document.getElementById("3").innerHTML;
+	var y1 = document.getElementById("4").innerHTML;
+	var y2 = document.getElementById("5").innerHTML;
+	var y3 = document.getElementById("6").innerHTML;
+	var z1 = document.getElementById("7").innerHTML;
+	var z2 = document.getElementById("8").innerHTML;
+	var z3 = document.getElementById("9").innerHTML;
+	
+	var choix = document.getElementById("choix").innerHTML;
+	
+	if(x1=="" && x2=="" && x3=="" && z1=="" && z2=="" && z3=="" && y1=="" && y2=="" && y3==""){
+		if(choix=="X"){
+			document.getElementById('owins').value = parseInt(document.getElementById('owins').value) + parseInt(1);
+		} else {
+			document.getElementById('xwins').value = parseInt(document.getElementById('xwins').value) + parseInt(1);
+		}
+	}
 }
 
 function json(){
@@ -126,8 +148,10 @@ window.addEventListener("load", init, false);
 			<br>
 			<button id='clear' onclick="envoyer();">Envoyer</button>				
 			<div id="idpartie">idpartie : ${idpartie}</div>
-			<div id="username">username : ${username}</div>
+			<div id="username">username : ${username} <span id="choix" style="color: red;"></span></div>
 			<div id="message"></div>
+			<br>X wins <input type="text" id="xwins" value="0" readonly></input><br> 
+			O wins <input type="text" id="owins" value="0" readonly></input>
 		</div>
 	</div>	
 	<script>
@@ -135,15 +159,17 @@ window.addEventListener("load", init, false);
 			<c:when test="${yourturn == 'no'}">
 				document.getElementById('gameboard').style.pointerEvents = 'none';
 				document.getElementById('message').innerHTML = 'A votre adversaire de jouer !';
+				document.getElementById('choix').innerHTML = 'O';
 			</c:when>
 			<c:when test="${yourturn == 'yes'}">
 				document.getElementById('message').innerHTML = 'A vous de jouer !';
+				document.getElementById('choix').innerHTML = 'X';
 			</c:when>
 		</c:choose>
 	</script>
 	<script>
 		function move(cell){
-			var x1 = document.getElementById("1").innerHTML;
+			/*var x1 = document.getElementById("1").innerHTML;
 			var x2 = document.getElementById("2").innerHTML;
 			var x3 = document.getElementById("3").innerHTML;
 			var y1 = document.getElementById("4").innerHTML;
@@ -156,10 +182,18 @@ window.addEventListener("load", init, false);
 			var cells = [x1, x2, x3, y1, y2, y3, z1, z2, z3];
 			cells = cells.filter(function(e){return e}); 
 
+			
 			if(cells.length%2 == 0)			
-				document.getElementById(cell).innerHTML = "X";
-			else 
-				document.getElementById(cell).innerHTML = "O";
+				document.getElementById(cell).innerHTML = choix;
+			else{
+				if(choix=="O")
+					document.getElementById(cell).innerHTML = "X";
+				else
+					document.getElementById(cell).innerHTML = "O";
+			} */
+			
+			var choix = document.getElementById("choix").innerHTML;
+			document.getElementById(cell).innerHTML = choix;
 			
 			document.getElementById('gameboard').style.pointerEvents = 'none';
 			document.getElementById('message').innerHTML = 'A votre adversaire de jouer !';
@@ -182,31 +216,40 @@ window.addEventListener("load", init, false);
 			    cell9 = document.getElementById("9").innerHTML;
 
 			  if (cell1 == cell2 && cell2 == cell3 && cell1 == cell3 && cell1 != "") {
-			    alert(cell1 + " Wins!");
+			    win(cell1);
+			    reset();
 			  } else {
 			    if (cell4 == cell5 && cell5 == cell6 && cell4 == cell6 && cell4 != "") {
-			      alert(cell4 + " Wins!");
+			      win(cell4);
+			      reset();
 			    } else {
 			      if (cell7 == cell8 && cell8 == cell9 && cell7 == cell9 && cell7 != "") {
-			        alert(cell7 + " Wins!");
+			    	win(cell7);
+			        reset();
 			      } else {
 			        if (cell1 == cell4 && cell4 == cell7 && cell1 == cell7 && cell1 != "") {
-			          alert(cell1 + " Wins!");
+			          win(cell1);
+			          reset();
 			        } else {
 			          if (cell2 == cell5 && cell5 == cell8 && cell2 == cell8 && cell2 != "") {
-			            alert(cell2 + " Wins!");
+			        	win(cell2);
+			            reset();
 			          } else {
 			            if (cell3 == cell6 && cell6 == cell9 && cell3 == cell9 && cell3 != "") {
-			              alert(cell3 + " Wins!");
+			              win(cell3);
+			              reset();
 			            } else {
 			              if (cell1 == cell5 && cell5 == cell9 && cell1 == cell9 && cell1 != "") {
-			                alert(cell1 + " Wins!");
+			            	win(cell1);
+			                reset();
 			              } else {
 			                if (cell3 == cell5 && cell5 == cell7 && cell3 == cell7 && cell3 != "") {
-			                  alert(cell3 + " Wins!");
+			                  win(cell3);
+			                  reset();
 			                } else {
 			                  if (cell1 != "" && cell2 != "" && cell3 != "" && cell4 != "" && cell5 != "" && cell6 != "" && cell7 != "" && cell8 != "" && cell9 != "") {
 			                    alert("Draw!");
+			                    reset();
 			                  }
 			                }
 			              }
@@ -218,6 +261,20 @@ window.addEventListener("load", init, false);
 			  }
 
 			}
+		
+		function reset(){
+			for (i = 1; i < 10; i++) { 
+				document.getElementById(i).innerHTML = "";
+			}
+		}
+		
+		function win(cell){
+			if(cell=="X"){
+				document.getElementById('xwins').value = parseInt(document.getElementById('xwins').value) + parseInt(1); 
+			}else{
+				document.getElementById('owins').value = parseInt(document.getElementById('owins').value) + parseInt(1);
+			}
+		}
 	</script>
 </body>
 </html>

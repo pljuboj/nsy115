@@ -46,7 +46,7 @@
 	
 	<div id ="output">${message}</div>	
 	
-	<form id="menuform" class="form-horizontal" role="form" action="Menu" method="post">	
+	<form id="menuform" class="form-horizontal" role="form" action="Menu" method="post" style="text-align:center">	
 		<input type="hidden" id="CODE_OP" value="" name="CODE_OP">
 		<input type="hidden" id="ID_PARTIE" value="" name="ID_PARTIE">			
 		<button type="button" class="btn btn-primary" onclick="creer()">Créer une partie</button>		

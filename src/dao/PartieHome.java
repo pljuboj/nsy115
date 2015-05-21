@@ -80,6 +80,24 @@ public class PartieHome {
 		}
 	}
 	
+	public Partie delete(Integer id) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			Partie partie = (Partie) session.get(Partie.class, id);
+			Hibernate.initialize(partie.getJoueurs());
+			session.delete(partie);
+			tx.commit();
+			return partie;
+		} catch (RuntimeException re) {
+			if (tx != null) tx.rollback();
+			throw re;
+		} finally {
+			session.close();
+		}
+	}
+	
 	public List<Partie> fetchAll() {
 		Session session = sessionFactory.openSession();
 		Transaction tx = null;

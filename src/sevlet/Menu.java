@@ -1,6 +1,7 @@
 package sevlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Partie;
 import service.PartieService;
 
 /**
@@ -36,6 +38,8 @@ public class Menu extends HttpServlet {
 		
 		if (partSer.partiePleine(idPartie)) {
 			request.setAttribute("message", "La partie est pleine");
+			ArrayList<Partie> parties = partSer.partieDispo();
+			session.setAttribute("parties", parties);
 			request.getRequestDispatcher("/menu.jsp").forward(request, response);
 		} else {
 			request.setAttribute("idpartie", idPartie);
@@ -76,6 +80,8 @@ public class Menu extends HttpServlet {
 			
 			if (partSer.partiePleine(idPartie)) {
 				request.setAttribute("message", "La partie est pleine");
+				ArrayList<Partie> parties = partSer.partieDispo();
+				session.setAttribute("parties", parties);
 				request.getRequestDispatcher("/menu.jsp").forward(request, response);
 			} else {
 				request.setAttribute("idpartie", idPartie);
