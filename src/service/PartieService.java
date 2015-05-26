@@ -49,7 +49,7 @@ public class PartieService {
 	public boolean partiePleine(int idpartie) {
 		partieDao = new PartieHome();
 		Partie partie = partieDao.get(idpartie);
-		if(partie.getJoueurs().size()==2){
+		if(partie==null || partie.getJoueurs().size()==2){
 			return true;
 		}else {
 			return false;

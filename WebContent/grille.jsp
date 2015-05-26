@@ -77,6 +77,9 @@ function updateScore(){
 		} else {
 			document.getElementById('xwins').value = parseInt(document.getElementById('xwins').value) + parseInt(1);
 		}
+	} else if(x1 && x2 && x3 && y1 && y2 && y3 && z1 && z2 && z3) {
+		document.getElementById('ties').value = parseInt(document.getElementById('ties').value) + parseInt(1);
+		reset();
 	}
 }
 
@@ -151,7 +154,8 @@ window.addEventListener("load", init, false);
 			<div id="username">username : ${username} <span id="choix" style="color: red;"></span></div>
 			<div id="message"></div>
 			<br>X wins <input type="text" id="xwins" value="0" readonly></input><br> 
-			O wins <input type="text" id="owins" value="0" readonly></input>
+			O wins <input type="text" id="owins" value="0" readonly></input><br>
+			Ties <input type="text" id="ties" value="0" readonly></input><br>
 		</div>
 	</div>	
 	<script>
@@ -248,8 +252,8 @@ window.addEventListener("load", init, false);
 			                  reset();
 			                } else {
 			                  if (cell1 != "" && cell2 != "" && cell3 != "" && cell4 != "" && cell5 != "" && cell6 != "" && cell7 != "" && cell8 != "" && cell9 != "") {
-			                    alert("Draw!");
-			                    reset();
+			                	document.getElementById('ties').value = parseInt(document.getElementById('ties').value) + parseInt(1);
+			                    json();
 			                  }
 			                }
 			              }

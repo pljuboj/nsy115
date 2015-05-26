@@ -8,7 +8,9 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 /**
  * Home object for domain model class Joueur.
@@ -18,11 +20,16 @@ import org.hibernate.cfg.Configuration;
  */
 public class JoueurHome {
 
-	private final SessionFactory sessionFactory = getSessionFactory();
+	private static SessionFactory sessionFactory = getSessionFactory();
+	private static ServiceRegistry serviceRegistry;
 
-	@SuppressWarnings("deprecation")
-	protected SessionFactory getSessionFactory() {
-		return new Configuration().configure().buildSessionFactory();
+	public static SessionFactory getSessionFactory() {
+		Configuration configuration = new Configuration();
+	    configuration.configure();
+	    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
+	            configuration.getProperties()).build();
+	    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    return sessionFactory;		
 	}
 
 	public void save(Joueur joueur) {

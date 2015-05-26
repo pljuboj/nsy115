@@ -12,7 +12,9 @@ import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 /**
  * Home object for domain model class Partie.
@@ -22,12 +24,16 @@ import org.hibernate.cfg.Configuration;
  */
 public class PartieHome {
 
+	private static SessionFactory sessionFactory = getSessionFactory();
+	private static ServiceRegistry serviceRegistry;
 
-	private final SessionFactory sessionFactory = getSessionFactory();
-
-	@SuppressWarnings("deprecation")
-	protected SessionFactory getSessionFactory() {
-		return new Configuration().configure().buildSessionFactory();
+	public static SessionFactory getSessionFactory() {
+		Configuration configuration = new Configuration();
+	    configuration.configure();
+	    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
+	            configuration.getProperties()).build();
+	    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+	    return sessionFactory;		
 	}
 
 	public Integer save(Partie partie) {
@@ -69,7 +75,9 @@ public class PartieHome {
 		try {
 			tx = session.beginTransaction();
 			Partie partie = (Partie) session.get(Partie.class, id);
-			Hibernate.initialize(partie.getJoueurs());
+			if(partie!=null){
+				Hibernate.initialize(partie.getJoueurs());				
+			}
 			tx.commit();
 			return partie;
 		} catch (RuntimeException re) {

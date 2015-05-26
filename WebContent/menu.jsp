@@ -68,6 +68,9 @@
 		
 		function rejoindre(){
 			var partie = prompt("Entrez l'ID de la partie");
+			if(partie=='' || partie==null){
+				return;
+			}
 			document.getElementById("ID_PARTIE").value = partie;
 			document.getElementById("CODE_OP").value = "REJOINDRE";
 		    document.getElementById("menuform").submit();
